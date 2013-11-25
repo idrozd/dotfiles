@@ -1,4 +1,6 @@
-/bundle/*
-/config/*
+/bundle
+/sessions
+.DS_Store
 
-/screenshots/*
+/.netrwhist
+/spell/custom.en.utf-8.add.spl

@@ -113,15 +113,9 @@ if ! shopt -oq posix; then
   fi
 fi
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
-source ~/.rvm/scripts/rvm
-
-
-PATH=$PATH:~/workspace/GlobalATI/script
 export PATH
 
-two-disp
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 export PATH="/opt/vagrant/bin:$PATH"
@@ -131,4 +125,4 @@ PS1="[\[\033[32m\]\w]\[\033[0m\]\n\[\033[1;36m\]\u\[\033[1;33m\]-> \[\033[0m\]"
 
 alias gg='git gro'
 
-stty -ixon[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting

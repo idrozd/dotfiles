@@ -11,8 +11,10 @@ ZSH_THEME="blinks"
  alias zshconfig="vim ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# Set to this to use case-sensitive completion
+# CASE_SENSITIVE="true"
 
-# Comment this out to disable bi-weekly auto-update checks
+# Uncomment this to disable bi-weekly auto-update checks
 # DISABLE_AUTO_UPDATE="true"
 
 # Uncomment to change how often before auto-updates occur? (in days)
@@ -25,7 +27,7 @@ ZSH_THEME="blinks"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment following line if you want to disable command autocorrection
- DISABLE_CORRECTION="true"
+DISABLE_CORRECTION="true"
 
 # Uncomment following line if you want red dots to be displayed while waiting for completion
 # COMPLETION_WAITING_DOTS="true"
@@ -43,33 +45,15 @@ plugins=(git rails3 ruby bundler gem web-search autojump nyan)
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-#export PATH=$PATH:/opt/vagrant/bin:/usr/local/heroku/bin:/home/atitov/.rvm/gems/ruby-1.9.3-p429/bin:/home/atitov/.rvm/gems/ruby-1.9.3-p429@global/bin:/home/atitov/.rvm/rubies/ruby-1.9.3-p429/bin:/home/atitov/.rvm/bin:/opt/vagrant/bin:/home/atitov/bin:/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/atitov/workspace/GlobalATI/script
+export PATH=$PATH:/opt/vagrant/bin:/usr/local/heroku/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/atitov/.rvm/bin:/home/atitov/workspace/GlobalATI/script
 
-#PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+export EDITOR=vim
 
-source ~/.rvm/scripts/rvm
-
-
-#PATH=$PATH:~/workspace/GlobalATI/script
-
-two-disp
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
-export PATH="/opt/vagrant/bin:$PATH"
-
-
-stty -ixon
-
-#alias tmux="tmux -2"
-
-[ -e $HOME/.oh-my-zsh/plugins/notifyosd/notifyosd.zsh ] && . $HOME/.oh-my-zsh/plugins/notifyosd/notifyosd.zsh
-
-export EDITOR="vim"
+source ~/bin/tmuxinator.zsh
 
 export TERM=screen-256color-bce
 
 export DISABLE_AUTO_TITLE=true
-#source `gem contents tmuxinator | grep zsh`
-#export PATH=/home/atitov/workspace/eua-wipeout/bin:$PATH
-#export PATH=$PATH:/home/atitov/workspace/eua-wipeout/bin
-export BROWSER=google-chrome
+
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting

@@ -14,30 +14,14 @@ filetype plugin indent on
 source ~/.vim/platforms.vim
 " All of the Vim configuration.
 source ~/.vim/config.vim
-" All hotkeys, not depedant on plugins, are bound here.
-source ~/.vim/bindings.vim
+" New commands
+source ~/.vim/commands.vim
+" All hotkeys, not dependant on plugins, are mapped here.
+source ~/.vim/mappings.vim
 " Plugin-specific configuration.
-source ~/.vim/plugin_config.vim
+source ~/.vim/plugins.vim
 " Small custom functions.
 source ~/.vim/functions.vim
 " Auto commands.
 source ~/.vim/autocmds.vim
-
-set t_ut=
-set nobackup
-set nowritebackup
-set noswapfile
-
-function! RubyMethodFold(line)
-  let line_is_method_or_end = synIDattr(synID(a:line,1,0), 'name') == 'rubyMethodBlock'
-  let line_is_def = getline(a:line) =~ '\s*def '
-  return line_is_method_or_end || line_is_def
-endfunction
-
-set foldexpr=RubyMethodFold(v:lnum)
-set foldmethod=expr
-
-nnoremap <C-c> "+y
-vnoremap <C-c> "+y
-nnoremap <C-v> "+gP
-vnoremap <C-v> "+gP
+Bundle 'rking/ag.vim'
