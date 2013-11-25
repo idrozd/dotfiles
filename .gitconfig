@@ -1,0 +1,50 @@
+
+[color]
+  ui = auto
+[user]
+  name = Andrey Titov
+  email = atitov@aligntech.com
+
+[alias]
+# fafafa comment
+  gr  = log --all --abbrev-commit --decorate --graph --color --date-order
+  gro  = log --all --abbrev-commit --decorate --graph --color --date-order --oneline
+  st  = status
+  ci  = commit
+  br  = branch
+  co  = checkout
+  df  = diff
+  lg  = log -p
+  who = shortlog -s --
+  new = shortlog --all --since='1 weeks ago' --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --reverse
+  new2 = whatchanged --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+
+
+[merge "gemfilelock"]
+  name = relocks the gemfile.lock
+  driver = bundle install
+
+[advice]
+  pushNonFastForward = false
+  statusHints = false
+
+[core]
+  whitespace = trailing-space,space-before-tab,cr-at-eol,fix
+  ;whitespace = -trailing-space,-indent-with-non-tab,-tab-in-indent,cr-at-eol
+	editor = vim
+
+[diff]
+  renames = copies
+  mnemonicprefix = true
+
+[branch]
+  autosetupmerge = true
+
+[push]
+  default = tracking
+
+[rerere]
+  enabled = true
+
+[merge]
+  stat = true
