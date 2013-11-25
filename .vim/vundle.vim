@@ -108,6 +108,11 @@ Bundle 'mattn/webapi-vim'
 Bundle 'xolox/vim-misc'
 Bundle 'rizzatti/funcoo.vim'
 
+Bundle 'FredKSchott/CoVim'
+Bundle 'tpope/vim-endwise'
+Bundle 'tpope/vim-unimpaired'
+Bundle 'slim-template/vim-slim'
+
 Bundle 'nanotech/jellybeans.vim'
 
 
