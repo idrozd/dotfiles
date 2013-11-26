@@ -461,3 +461,5 @@ let g:airline#extensions#anzu#enabled = 1
 
 " Vroom
 let g:vroom_use_spring = 1
+
+let g:ctrlp_show_hidden = 1
