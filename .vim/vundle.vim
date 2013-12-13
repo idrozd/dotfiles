@@ -134,3 +134,10 @@ Bundle "jgdavey/vim-blockle"
 
 Bundle "https://github.com/michaeljsmith/vim-indent-object"
 
+Bundle "justinmk/vim-sneak"
+
+Bundle "tpope/vim-fireplace"
+Bundle "tpope/vim-classpath"
+Bundle "guns/vim-clojure-static"
+
+Bundle 'amdt/vim-niji'

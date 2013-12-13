@@ -463,3 +463,8 @@ let g:airline#extensions#anzu#enabled = 1
 let g:vroom_use_spring = 1
 
 let g:ctrlp_show_hidden = 1
+
+" Delimitmate
+
+au FileType clj,clojure let b:delimitMate_quotes = "\""
+

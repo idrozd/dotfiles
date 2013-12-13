@@ -27,7 +27,7 @@ nnoremap Y y$
 
 " Just to beginning and end of lines easier. From http://vimbits.com/bits/16
 noremap H ^
-noremap L $
+noremap L $h
 
 " Create newlines without entering insert mode
 nnoremap go o<Esc>k
@@ -172,6 +172,8 @@ vnoremap <C-c> "+y
 nnoremap <C-v> "+gP
 vnoremap <C-v> "+gP
 
+nnoremap <C-W>q <C-V>
+
 " Slimux
 map <Leader>s :SlimuxREPLSendLine<CR>
 vmap <Leader>s :SlimuxREPLSendSelection<CR>
@@ -192,6 +194,9 @@ nmap <silent> <c-j> :wincmd j<CR>
 nmap <silent> <c-h> :wincmd h<CR>
 nmap <silent> <c-l> :wincmd l<CR>
 
-map <C-PageUp> :tabp<CR>
-map <C-PageDown> :tapn<CR>
-
+nmap s <Plug>SneakForward
+nmap S <Plug>SneakBackward
+xmap s <Plug>SneakForward
+xmap S <Plug>SneakBackward
+nmap  <Plug>SneakNext
+xmap  <Plug>SneakNext

@@ -49,6 +49,8 @@ export PATH=$PATH:/opt/vagrant/bin:/usr/local/heroku/bin:/usr/local/sbin:/usr/lo
 
 export EDITOR=vim
 
+export PATH="$PATH":~/bin
+
 source ~/bin/tmuxinator.zsh
 
 export TERM=screen-256color-bce
