@@ -1,19 +1,23 @@
 " ---------------------------------------------
 " Regular Vim Configuration (No Plugins Needed)
 " ---------------------------------------------
-set term=xterm-256color
+
 " ---------------
 " Color
 " ---------------
 set background=dark
 colorscheme jellybeans
-
+" Force 256 color mode if available
+if $TERM =~ "-256color"
+   set t_Co=256
+endif
+set term=xterm-256color
 " -----------------------------
-" Backups, Tmp Files, and Undo
+" File Locations
 " -----------------------------
-set backup
 set backupdir=~/.vim/.backup
 set directory=~/.vim/.tmp
+set spellfile=~/.vim/spell/custom.en.utf-8.add
 " Persistent Undo
 if has('persistent_undo')
   set undofile
@@ -46,6 +50,7 @@ endif
 " Behaviors
 " ---------------
 syntax enable
+set backup             " Turn on backups
 set autoread           " Automatically reload changes if detected
 set wildmenu           " Turn on WiLd menu
 set hidden             " Change buffer - without saving
@@ -60,12 +65,14 @@ set formatoptions=crql
 set iskeyword+=\$,-   " Add extra characters that are valid parts of variables
 set nostartofline      " Don't go to the start of the line after some commands
 set scrolloff=3        " Keep three lines below the last line when scrolling
+set gdefault           " this makes search/replace global by default
+set switchbuf=useopen  " Switch to an existing buffer if one exists
 
 " ---------------
 " Text Format
 " ---------------
 set tabstop=2
-set backspace=2  " Delete everything with backspace
+set backspace=indent,eol,start " Delete everything with backspace
 set shiftwidth=2 " Tabs under smart indent
 set cindent
 set autoindent
@@ -77,10 +84,11 @@ set expandtab
 " ---------------
 set ignorecase " Case insensitive search
 set smartcase  " Non-case sensitive search
-set incsearch
-set hlsearch
+set incsearch  " Incremental search
+set hlsearch   " Highlight search results
 set wildignore+=*.o,*.obj,*.exe,*.so,*.dll,*.pyc,.svn,.hg,.bzr,.git,
-  \.sass-cache,*.class,*.scssc,*.cssc,sprockets%*,*.lessc
+  \.sass-cache,*.class,*.scssc,*.cssc,sprockets%*,*.lessc,*/node_modules/*,
+  \rake-pipeline-*
 
 " ---------------
 " Visual
@@ -121,3 +129,13 @@ set mouse=a    " Mouse in all modes
 
 " Better complete options to speed it up
 set complete=.,w,b,u,U
+
+if &term =~ '256color'
+  " disable Background Color Erase (BCE) so that color schemes
+  " render properly when inside 256-color tmux and GNU screen.
+  " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
+  set t_ut=
+endif
+set nobackup
+set nowritebackup
+set noswapfile

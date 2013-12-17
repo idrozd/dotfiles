@@ -17,13 +17,11 @@ Bundle 'gmarik/vundle'
 
 " Navigation
 Bundle 'ZoomWin'
-" This fork is required due to remapping ; to :
-Bundle 'christoomey/vim-space'
-Bundle 'Lokaltog/vim-easymotion'
 Bundle 'kien/ctrlp.vim'
+Bundle 'JazzCore/ctrlp-cmatcher'
 " UI Additions
 Bundle 'nathanaelkane/vim-indent-guides'
-Bundle 'Lokaltog/vim-powerline'
+Bundle 'bling/vim-airline'
 Bundle 'scrooloose/nerdtree'
 Bundle 'Rykka/colorv.vim'
 Bundle 'nanotech/jellybeans.vim'
@@ -32,40 +30,50 @@ Bundle 'mhinz/vim-startify'
 Bundle 'mbbill/undotree'
 Bundle 'jszakmeister/vim-togglecursor'
 " Commands
-Bundle 'scrooloose/nerdcommenter'
+Bundle 'tomtom/tcomment_vim'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-fugitive'
 Bundle 'godlygeek/tabular'
 Bundle 'rking/ag.vim'
 Bundle 'milkypostman/vim-togglelist'
-Bundle 'AndrewRadev/sideways.vim'
+Bundle 'mutewinter/swap-parameters'
 Bundle 'tpope/vim-abolish'
 Bundle 'scratch.vim'
-Bundle 'mattn/zencoding-vim'
+Bundle 'mattn/emmet-vim'
 Bundle 'mutewinter/GIFL'
-Bundle 'swaroopch/vim-markdown-preview'
 Bundle 'AndrewRadev/switch.vim'
 Bundle 'tpope/vim-eunuch'
 Bundle 'itspriddle/vim-marked'
 Bundle 'mutewinter/UnconditionalPaste'
-Bundle 'skalnik/vim-vroom'
 Bundle 'HelpClose'
 Bundle 'mattn/gist-vim'
 Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'sk1418/Join'
+Bundle 'SirVer/ultisnips'
+Bundle 'g3orge/vim-voogle'
+Bundle 'benmills/vimux'
+Bundle 'jgdavey/vim-turbux'
+Bundle 'ecomba/vim-ruby-refactoring'
+Bundle 'christoomey/vim-tmux-navigator'
+Bundle 'dsawardekar/portkey'
+Bundle 'dsawardekar/ember.vim'
+Bundle 'rizzatti/dash.vim'
 " Automatic Helpers
-Bundle 'IndexedSearch'
+Bundle 'osyo-manga/vim-anzu'
 Bundle 'xolox/vim-session'
 Bundle 'Raimondi/delimitMate'
+Bundle 'scrooloose/syntastic'
 Bundle 'ervandew/supertab'
 Bundle 'Valloric/MatchTagAlways'
-"Bundle 'Valloric/YouCompleteMe'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'kballenegger/vim-autoreadwatch'
 " Language Additions
 "   Ruby
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-rake'
+Bundle 'tpope/vim-bundler'
 "   JavaScript
 Bundle 'pangloss/vim-javascript'
 Bundle 'kchmck/vim-coffee-script'
@@ -85,11 +93,12 @@ Bundle 'mutewinter/taskpaper.vim'
 Bundle 'mutewinter/nginx.vim'
 Bundle 'timcharper/textile.vim'
 Bundle 'mutewinter/vim-css3-syntax'
-Bundle 'acustodioo/vim-tmux'
+Bundle 'mutewinter/vim-tmux'
 Bundle 'plasticboy/vim-markdown'
 Bundle 'groenewege/vim-less'
 Bundle 'wavded/vim-stylus'
 Bundle 'tpope/vim-cucumber'
+Bundle 'chrisbra/csv.vim'
 " MatchIt
 Bundle 'matchit.zip'
 Bundle 'kana/vim-textobj-user'
@@ -98,10 +107,15 @@ Bundle 'nelstrom/vim-textobj-rubyblock'
 Bundle 'L9'
 Bundle 'tpope/vim-repeat'
 Bundle 'mattn/webapi-vim'
+Bundle 'xolox/vim-misc'
+Bundle 'rizzatti/funcoo.vim'
+
 Bundle 'FredKSchott/CoVim'
 Bundle 'tpope/vim-endwise'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'slim-template/vim-slim'
+
+Bundle 'nanotech/jellybeans.vim'
 
 
 Bundle "austintaylor/vim-indentobject"
@@ -119,16 +133,13 @@ Bundle "vim-scripts/argtextobj.vim"
 
 Bundle "epeli/slimux"
 Bundle "jgdavey/vim-blockle"
-Bundle "goldfeld/vim-seek"
 
 Bundle "https://github.com/michaeljsmith/vim-indent-object"
 
-Bundle 'https://github.com/skwp/greplace.vim'
-Bundle 'benmills/vimux'
+Bundle "justinmk/vim-sneak"
 
-
-Bundle "guns/vim-clojure-static"
 Bundle "tpope/vim-fireplace"
 Bundle "tpope/vim-classpath"
+Bundle "guns/vim-clojure-static"
 
 Bundle 'amdt/vim-niji'
