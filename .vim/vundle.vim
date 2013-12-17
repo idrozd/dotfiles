@@ -70,10 +70,12 @@ Bundle 'tpope/vim-rake'
 Bundle 'pangloss/vim-javascript'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'leshill/vim-json'
+Bundle 'elzr/vim-json'
 "   HTML
 Bundle 'nono/vim-handlebars'
 Bundle 'othree/html5.vim'
 Bundle 'indenthtml.vim'
+Bundle 'mattn/emmet-vim'
 "   TomDoc
 Bundle 'mutewinter/tomdoc.vim'
 Bundle 'jc00ke/vim-tomdoc'
@@ -121,6 +123,12 @@ Bundle "goldfeld/vim-seek"
 
 Bundle "https://github.com/michaeljsmith/vim-indent-object"
 
-"Bundle 'https://github.com/mattboehm/vim-unstack'
 Bundle 'https://github.com/skwp/greplace.vim'
 Bundle 'benmills/vimux'
+
+
+Bundle "guns/vim-clojure-static"
+Bundle "tpope/vim-fireplace"
+Bundle "tpope/vim-classpath"
+
+Bundle 'amdt/vim-niji'
