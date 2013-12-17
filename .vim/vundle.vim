@@ -132,6 +132,7 @@ Bundle "thinca/vim-textobj-function-javascript"
 Bundle "vim-scripts/argtextobj.vim"
 
 Bundle "epeli/slimux"
+Bundle "skalnik/vim-vroom"
 Bundle "jgdavey/vim-blockle"
 
 Bundle "https://github.com/michaeljsmith/vim-indent-object"

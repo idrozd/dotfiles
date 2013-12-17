@@ -161,11 +161,11 @@ nnoremap K k
 vnoremap K k
 
 "kinda Spork
-nmap <leader>S :call vroom#RunNearestTest({'options':'--drb'})
-nmap <leader>SS :call vroom#RunTestFile({'options':'--drb'})
+nmap <leader>S :call vroom#RunNearestTest({'options':'--drb'})<CR>
+nmap <leader>SS :call vroom#RunTestFile({'options':'--drb'})<CR>
 
 " Pry-rescue
-nmap <leader>RR :call vroom#RunNearestTest({'options':'-rrescue'})
+nmap <leader>RR :call vroom#RunNearestTest({'options':'-rrescue'})<CR>
 
 nnoremap <C-c> "+y
 vnoremap <C-c> "+y
@@ -180,6 +180,7 @@ vmap <Leader>s :SlimuxREPLSendSelection<CR>
 map <Leader>a :SlimuxShellLast<CR>
 map <Leader>ssp :SlimuxShellPrompt<CR>
 map <Leader>k :SlimuxSendKeysLast<CR>
+
 
 " Blockle
 let g:blockle_mapping = '<Leader>fb'
