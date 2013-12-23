@@ -16,7 +16,7 @@ Bundle 'gmarik/vundle'
 " ---------------
 
 " Navigation
-Bundle 'ZoomWin'
+Bundle 'regedarek/ZoomWin'
 Bundle 'kien/ctrlp.vim'
 Bundle 'JazzCore/ctrlp-cmatcher'
 " UI Additions
