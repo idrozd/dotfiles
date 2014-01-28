@@ -1,0 +1,8 @@
+[submodule "pure"]
+  path = pure
+  url  = https://github.com/sindresorhus/pure
+
+[submodule "jshuery"]
+  path = jshuery
+  url  = https://github.com/myfreeweb/zshuery
+
