@@ -13,10 +13,6 @@ else
     export EDITOR='vim'
 fi
 
-chpwd() {
-    update_terminal_cwd
-}
-
 fpath=( "$HOME/.zfunctions" $fpath )
 autoload -U promptinit && promptinit
 prompt pure
@@ -54,3 +50,24 @@ export DISABLE_AUTO_TITLE=true
 #export PATH=/home/atitov/workspace/eua-wipeout/bin:$PATH
 #export PATH=$PATH:/home/atitov/workspace/eua-wipeout/bin
 export BROWSER=google-chrome
+
+
+
+export KEYTIMEOUT=1    
+bindkey -v  
+
+vim_ins_mode="%{$fg_bold[blue]%}[INS]%{$reset_color%}"    
+vim_cmd_mode="%{$fg_bold[green]%}[CMD]%{$reset_color%}"
+vim_mode=$vim_ins_mode    
+    
+function zle-keymap-select {    
+  vim_mode="${${KEYMAP/vicmd/${vim_cmd_mode}}/(main|viins)/${vim_ins_mode}}"    
+  zle reset-prompt    
+}    
+zle -N zle-keymap-select    
+    
+function zle-line-finish {    
+  vim_mode=$vim_ins_mode    
+}    
+zle -N zle-line-finish    
+RPROMPT='${vim_mode}'
