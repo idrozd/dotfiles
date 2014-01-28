@@ -5,6 +5,7 @@
 !.gitconfig
 .gitconfig.local
 !.gitignore
+!.gitmodules
 
 !.pryrc
 
