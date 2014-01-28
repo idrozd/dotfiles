@@ -144,3 +144,6 @@ Bundle "tpope/vim-classpath"
 Bundle "guns/vim-clojure-static"
 
 Bundle 'amdt/vim-niji'
+
+Bundle "amix/vim-zenroom"
+
