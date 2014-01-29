@@ -64,10 +64,13 @@ nnoremap <leader>os :OpenSession<CR>
 " ---------------
 " Tabular
 " ---------------
+AddTabularPattern! hash_key_line /:\@<=\s/l0
+
+
 nnoremap <Leader>t= :Tabularize assignment<CR>
 vnoremap <Leader>t= :Tabularize assignment<CR>
-nnoremap <Leader>t: :Tabularize symbol<CR>
-vnoremap <Leader>t: :Tabularize symbol<CR>
+nnoremap <Leader>t: :Tabularize hash_key_line<CR>
+vnoremap <Leader>t: :Tabularize hash_key_line<CR>
 nnoremap <Leader>t, :Tabularize comma<CR>
 vnoremap <Leader>t, :Tabularize comma<CR>
 
