@@ -71,3 +71,5 @@ function zle-line-finish {
 }    
 zle -N zle-line-finish    
 RPROMPT='${vim_mode}'
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
