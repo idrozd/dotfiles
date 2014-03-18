@@ -2,7 +2,7 @@
   path = pure
   url  = https://github.com/sindresorhus/pure
 
-[submodule "jshuery"]
-  path = jshuery
+[submodule "zshuery"]
+  path = zshuery
   url  = https://github.com/myfreeweb/zshuery
 
