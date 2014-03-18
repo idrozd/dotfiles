@@ -1,0 +1,17 @@
+/*
+!.bashrc
+!.zshrc
+
+!.gitconfig
+.gitconfig.local
+!.gitignore
+
+!.pryrc
+
+!.vimrc
+!/.vim/
+/.vim/bundle/*
+
+!/.config/
+/.config/*
+!/.config/awesome
