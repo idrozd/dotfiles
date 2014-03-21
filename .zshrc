@@ -29,8 +29,9 @@ alias zshconfig="vim ~/.zshrc"
 
 #PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
-source ~/.rvm/scripts/rvm
+eval "$(fasd --init auto)"
 
+source ~/.rvm/scripts/rvm
 
 #PATH=$PATH:~/workspace/GlobalATI/script
 
