@@ -6,3 +6,6 @@
   path = zshuery
   url  = https://github.com/myfreeweb/zshuery
 
+[submodule ".tmux"]
+  path = .tmux
+  url = https://github.com/nviennot/tmux-config.git 
