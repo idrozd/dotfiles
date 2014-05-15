@@ -4,6 +4,7 @@
 " Version: 2.0 - Now individual config files!
 " ===========================================
 
+set shell=/bin/sh
 " All of the plugins are installed with Vundle from this file.
 source ~/.vim/vundle.vim
 
