@@ -16,8 +16,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=10000
+HISTFILESIZE=20000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -113,16 +113,19 @@ if ! shopt -oq posix; then
   fi
 fi
 
-
 export PATH
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
-export PATH="/opt/vagrant/bin:$PATH"
-
+# export PATH="/opt/vagrant/bin:$PATH"
 
 PS1="[\[\033[32m\]\w]\[\033[0m\]\n\[\033[1;36m\]\u\[\033[1;33m\]-> \[\033[0m\]"
 
 alias gg='git gro'
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+export JAVA_HOME="$(/usr/libexec/java_home) "
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"

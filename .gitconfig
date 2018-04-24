@@ -18,6 +18,7 @@
   who = shortlog -s --
   new = shortlog --all --since='1 weeks ago' --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --reverse
   new2 = whatchanged --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+	d = difftool
 
 
 [merge "gemfilelock"]
@@ -32,10 +33,14 @@
   whitespace = trailing-space,space-before-tab,cr-at-eol,fix
   ;whitespace = -trailing-space,-indent-with-non-tab,-tab-in-indent,cr-at-eol
 	editor = vim
+	excludesfile = /Users/atitov/.global-gitignore
+	filemode = false
+	filemode = false
 
 [diff]
   renames = copies
   mnemonicprefix = true
+	tool = vimdiff
 
 [branch]
   autosetupmerge = true
@@ -48,3 +53,12 @@
 
 [merge]
   stat = true
+	tool = vimdiff
+[url "https://"]
+	insteadOf = git://
+[difftool]
+	prompt = false
+[url "ssh://git@heroku.com/"]
+	insteadOf = https://git.heroku.com/
+[url "ssh://git@heroku.align/"]
+	insteadOf = https://heroku.align/
