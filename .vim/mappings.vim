@@ -108,9 +108,6 @@ nnoremap <leader>h *<C-O>
 " Toggle spelling mode with ,s
 nnoremap <silent> <leader>s :set spell!<CR>
 
-" Begin to edit any file in .vim directory
-nnoremap <leader>v :e ~/.vim/
-
 " Quickly switch to last buffer
 nnoremap <leader>, :e#<CR>
 
@@ -157,8 +154,17 @@ cnoremap w' w<CR>
 nnoremap Q @@
 
 " Removes doc lookup mapping because it's easy to fat finger and never useful.
-nnoremap K k
-vnoremap K k
+" nnoremap K k
+" vnoremap K k
+
+" Toggle paste mode with F5
+nnoremap <silent> <F5> :set paste!<CR>
+
+" Insert date
+iabbrev ddate <C-R>=strftime("%Y-%m-%d")<CR>
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "kinda Spork
 nmap <leader>S :call vroom#RunNearestTest({'options':'--drb'})<CR>
@@ -199,5 +205,7 @@ nmap s <Plug>SneakForward
 nmap S <Plug>SneakBackward
 xmap s <Plug>SneakForward
 xmap S <Plug>SneakBackward
-nmap  <Plug>SneakNext
-xmap  <Plug>SneakNext
+nmap \ <Plug>SneakNext
+xmap \ <Plug>SneakNext
+nmap  <Plug>SneakPrevious
+xmap  <Plug>SneakPrevious

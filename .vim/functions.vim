@@ -145,7 +145,7 @@ function! StripTrailingWhiteSpaceAndSave()
   :write
 endfunction
 command! StripTrailingWhiteSpaceAndSave :call StripTrailingWhiteSpaceAndSave()<CR>
-nnoremap <silent>stw :silent! StripTrailingWhiteSpaceAndSave<CR>
+nnoremap <silent> <leader>stw :silent! StripTrailingWhiteSpaceAndSave<CR>
 
 " ---------------
 " Paste using Paste Mode
@@ -173,7 +173,7 @@ nnoremap <silent> <leader>p :PasteWithPasteMode<CR>
 " ---------------
 
 function WriteBufferIfNecessary()
-  if &modified && filewritable(expand('%')) && !&readonly
+  if &modified && !&readonly
     :write
   endif
 endfunction
@@ -226,3 +226,13 @@ function! CopyMatches(reg)
   execute 'let @'.reg.' = join(hits, "\n") . "\n"'
 endfunction
 command! -register CopyMatches call CopyMatches(<q-reg>)
+
+function! YankLineWithoutNewline()
+  let l = line(".")
+  let c = col(".")
+  normal ^y$
+  " Clean up: restore previous search history, and cursor position
+  call cursor(l, c)
+endfunction
+
+nnoremap <silent>yl :call YankLineWithoutNewline()<CR>

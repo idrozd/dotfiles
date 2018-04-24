@@ -11,7 +11,7 @@ colorscheme jellybeans
 if $TERM =~ "-256color"
    set t_Co=256
 endif
-set term=xterm-256color
+
 " -----------------------------
 " File Locations
 " -----------------------------
@@ -50,7 +50,9 @@ endif
 " Behaviors
 " ---------------
 syntax enable
-set backup             " Turn on backups
+set nobackup             " Turn on backups
+set nowritebackup
+set noswapfile
 set autoread           " Automatically reload changes if detected
 set wildmenu           " Turn on WiLd menu
 set hidden             " Change buffer - without saving
@@ -58,14 +60,30 @@ set history=768        " Number of things to remember in history.
 set cf                 " Enable error files & error jumping.
 set clipboard+=unnamed " Yanks go on clipboard instead.
 set autowrite          " Writes on make/shell commands
-set timeoutlen=450     " Time to wait for a command (after leader for example).
-set nofoldenable       " Disable folding entirely.
-set foldlevelstart=99  " I really don't like folds.
+" set timeoutlen=450     " Time to wait for a command (after leader for example).
+set ttimeout
+set ttimeoutlen=100    " Time to wait for a command (after leader for example).
+" set nofoldenable       " Disable folding entirely.
+" set foldlevelstart=99  " I really don't like folds.
+
+set foldmethod=manual
+set foldlevelstart=99
+
+" let javaScript_fold=1         " JavaScript
+let perl_fold=1               " Perl
+let php_folding=1             " PHP
+let r_syntax_folding=1        " R
+" let ruby_fold=1               " Ruby
+let sh_fold_enabled=1         " sh
+let vimsyn_folding='af'       " Vim script
+let xml_syntax_folding=1      " XML
+
+
 set formatoptions=crql
 set iskeyword+=\$,-   " Add extra characters that are valid parts of variables
 set nostartofline      " Don't go to the start of the line after some commands
 set scrolloff=3        " Keep three lines below the last line when scrolling
-set gdefault           " this makes search/replace global by default
+" set gdefault           " this makes search/replace global by default
 set switchbuf=useopen  " Switch to an existing buffer if one exists
 
 " ---------------
@@ -74,6 +92,7 @@ set switchbuf=useopen  " Switch to an existing buffer if one exists
 set tabstop=2
 set backspace=indent,eol,start " Delete everything with backspace
 set shiftwidth=2 " Tabs under smart indent
+set shiftround
 set cindent
 set autoindent
 set smarttab
@@ -104,7 +123,7 @@ set list
 " Reset the listchars
 set listchars=""
 " make tabs visible
-set listchars=tab:\|\
+set listchars=tab:▸▸
 " show trailing spaces as dots
 set listchars+=trail:.
 " The character to show in the last column when wrap is off and the line
@@ -125,17 +144,12 @@ set t_vb=
 " Mouse
 " ---------------
 set mousehide  " Hide mouse after chars typed
-set mouse=a    " Mouse in all modes
+" set mouse=a    " Mouse in all modes
 
+set mouse+=a
+if &term =~ '^screen'
+    " tmux knows the extended mouse mode
+    set ttymouse=xterm2
+endif
 " Better complete options to speed it up
 set complete=.,w,b,u,U
-
-if &term =~ '256color'
-  " disable Background Color Erase (BCE) so that color schemes
-  " render properly when inside 256-color tmux and GNU screen.
-  " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
-  set t_ut=
-endif
-set nobackup
-set nowritebackup
-set noswapfile

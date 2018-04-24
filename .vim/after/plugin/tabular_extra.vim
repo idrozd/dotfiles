@@ -15,7 +15,7 @@ AddTabularPattern json /:
 AddTabularPattern symbol /:/l1c0
 AddTabularPattern equals /=
 AddTabularPattern comma /,\zs
-
+AddTabularPattern! hasher /\w:\zs/l0l1
 " Restore the saved value of 'cpo'
 let &cpo = s:save_cpo
 unlet s:save_cpo

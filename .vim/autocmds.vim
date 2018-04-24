@@ -40,5 +40,22 @@ if has("autocmd")
     " to run commands there.
     autocmd! CmdwinEnter * :unmap <cr>
     autocmd! CmdwinLeave * :call MapCR()
+
+
   augroup END
+
+  augroup BgHighlight
+      autocmd!
+      autocmd WinEnter * set cul
+      autocmd WinLeave * set nocul
+  augroup END
+
+  autocmd FileType clojure inoremap <buffer> ' '
+
+  au VimEnter * RainbowParenthesesToggle
+  au Syntax * RainbowParenthesesLoadRound
+  au Syntax * RainbowParenthesesLoadSquare
+  au Syntax * RainbowParenthesesLoadBraces
+
+
 endif
