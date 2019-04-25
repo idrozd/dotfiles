@@ -11,11 +11,7 @@
 
 !.vimrc
 !/.vim/
-/.vim/bundle/*
-
-!/.config/
-/.config/*
-!/.config/awesome
+ /.vim/bundle/*
 
 !pure
 !zshuery

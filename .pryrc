@@ -54,12 +54,18 @@ end
 # end
 
 def pbcopy arg
-  cmd = <<~CMD
-    pbcopy <<'SHIT'
-     #{arg}
-    SHIT
-  CMD
-  puts cmd
+  cmd =
+  if arg.to_s.lines.one?
+    %[echo #{Shellwords.escape arg.squish} | pbcopy \n]
+  else
+    <<~CMD
+      pbcopy echo -n <<'SHIT'
+      #{arg}
+      SHIT
+    CMD
+  end
+
+  puts cmd.inspect
   %x[#{cmd}]
 end
 
@@ -95,16 +101,44 @@ def dur *args
 end
 
 if defined? Delayed::Job
-  tp.set Delayed::Job,
-         {:id         => {}},
-         {:run_at     => {}},
-         {:last_error => {}},
-         {:locked_at  => {}},
-         {:failed_at  => {}},
-         {:locked_by  => {}},
-         {:created_at => {}},
-         {:attempts   => {display_name: "N", width: 2}},
-         {:payload    => {display_method: proc{ |j| j.payload_object.try{ |po| [po.try(:method_name), po.class.name, *po.try(:args)].compact.join(?|) }}, width: 40  }} # updated_at, :queue, :priority,
+  pr_payload = lambda{ |j| YAML.load(j.handler).try{ |po|
+                         [po.try(:method_name), po.class.name, *po.try(:args)].compact.join("|") }}
+
+  if defined?(TablePrint)
+    tp.set( Delayed::Job,
+      {:id         => {}},
+      {:run_at     => {}},
+      {:last_error => {}},
+      {:locked_at  => {}},
+      {:failed_at  => {}},
+      {:locked_by  => {}},
+      {:created_at => {}},
+      {:attempts   => {display_name: "N", width: 2}},
+      {:payload    => {display_method: pr_payload}})
+  end
+
+  #        {:id         => {}},
+  #        {:run_at     => {}},
+  #        {:last_error => {}},
+  #        {:locked_at  => {}},
+  #        {:failed_at  => {}},
+  #        {:locked_by  => {}},
+  #        {:created_at => {}},
+  #        {:attempts   => {display_name: "N", width: 2}},
+  #        {:payload    => {display_method: proc{ |j| j.payload_object.try{ |po| [po.try(:method_name), po.class.name, *po.try(:args)].compact.join(?|) }}, width: 40  }} # updated_at, :queue, :priority,
+
+
+  # tp( dj.all,
+  #   {:id         => {}},
+  #   {:run_at     => {}},
+  #   {:last_error => {}},
+  #   {:locked_at  => {}},
+  #   {:failed_at  => {}},
+  #   {:locked_by  => {}},
+  #   {:created_at => {}},
+  #   {:attempts   => {display_name: "N", width: 2}},
+  #   {:payload    => {display_method: pr_payload}})
+
 end
 
 # begin
@@ -177,7 +211,10 @@ Object.class_exec do
 
   def tps_md(data=Class, *options)
     printer = TablePrint::Printer.new(data, options)
-    printer.table_print.to_s.lines.tap{ |ll| ll.delete_at(1) }.map{ |l| "| " + l.strip + " |" }.join("\n")
+    printer.table_print.to_s.lines.tap{ |ll| ll.delete_at(1) }.map{ |l| "| " + l.strip + " |" }.try do |lines|
+      lines.first.gsub!("|", "||")
+      lines
+    end.join("\n")
   end
 
 
@@ -202,6 +239,10 @@ if defined? Rails
 
     Object.class_exec do
       # surround code you are interested in with yui/yuio
+      class_variable_set("@@stash", {})
+      cattr_reader :stash
+
+
       def yui filter = lambda{|msg| true}
         debu
         $_yui_logger_bup = Rails.logger
@@ -234,7 +275,7 @@ if defined? Rails
       def _o label = '', tag: '', &blk
         # puts 'whoa', $_suppress_debug
         # puts $_x
-        label = CodeRay.encode called_from.last, :ruby, :terminal if label.blank?
+        label = CodeRay.encode(called_from.last, :ruby, :terminal) if label.blank?
         tap do
           next if $_suppress_debug
           $_debug_only and (next unless $_debug_only.include? tag)
@@ -242,8 +283,21 @@ if defined? Rails
           # $_debulog.info ?\n
           $_debulog.debug label.center(80, ?-)
           # $_debulog.debug ?\n*2 + ?-*20 + label + ?-*20 + ?\n
-          $_debulog.debug '=> ' + CodeRay.encode( blk.call(self).inspect, :ruby, :terminal)
+          case
+          # when is_a?(Array) && first.is_a?(ActiveRecord::Base)
+          when is_a?(Array) && tp.config_for(first.class)
+            $_debulog.debug tps(blk.call(self))
+          else
+            $_debulog.debug '=> ' + CodeRay.encode( blk.call(self).inspect, :ruby, :terminal)
+          end
           $_debulog.debug ?\n
+        end
+      end
+
+      # _expose as global
+      def _e(name)
+        tap do
+          Object.stash[name] = self
         end
       end
 
@@ -258,6 +312,35 @@ if defined? Rails
         [ (to_sql), ?\n, tps( self), ].join
         end
       end
+
+
+      def ilike(like_what, attr = 'name')
+        where(%[#{attr} ILIKE '%#{like_what}%'])
+      end
+    end
+  end
+
+  String.class_exec do
+    # Underscore a string such that camelcase, dashes and spaces are
+    # replaced by underscores. This is the reverse of {#camelcase},
+    # albeit not an exact inverse.
+    #
+    #   "SnakeCase".snakecase         #=> "snake_case"
+    #   "Snake-Case".snakecase        #=> "snake_case"
+    #   "Snake Case".snakecase        #=> "snake_case"
+    #   "Snake  -  Case".snakecase    #=> "snake_case"
+    #
+    # Note, this method no longer converts `::` to `/`, in that case
+    # use the {#pathize} method instead.
+
+    def snakecase
+      gsub(/::/, '/').
+      gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+        gsub(/([a-z\d])([A-Z])/,'\1_\2').
+        tr('-', '_').
+        gsub(/\s/, '_').
+        gsub(/__+/, '_').
+        downcase
     end
   end
 
@@ -268,6 +351,10 @@ end
 if defined?(Rails) && Rails.application.engine_name =~ /wcm/i
 
   def envi name = 'ppr'
+    if name == 'prod'
+      prenvi
+      return nil
+    end
     @cfgs ||= {}
     @cfgs[name] ||= Bundler.with_clean_env{ `h #{name} config -s | grep URL`}.lines.map{|ln| ln.gsub(?', "").split(/=/, 2).map(&:strip)}.to_h
     cfg = @cfgs[name]
@@ -281,9 +368,71 @@ if defined?(Rails) && Rails.application.engine_name =~ /wcm/i
     # Pry.config.prompt_name = name
   end
 
+
+  def prenvi
+    name = "PRD"
+    @cfgs ||= {}
+    base = Bundler.with_clean_env{ `h qas config:get FEATURE_READONLY_FOLLOWER__MASTER_DB_URL` }.strip
+    ActiveRecord::Base.establish_connection(p base)
+    Connections::OnlyInMasterDb.establish_connection p( base)
+    Connections::SalesforceDataHub.establish_connection p (base + '?schema_search_path=salesforce,public')
+    # Connections::Ids.establish_connection p (cfg['IDS_DB_URL
+
+    eval("_pry_", binding.callers[1]).config.prompt_name = %[LIVE #{name} DBs!].red
+    nil
+  end
+
+
+  def model_for_env(model, source: "prod", db_url_env_name: "DATABASE_URL")
+    @cfgs ||= {}
+    @cfgs[source] ||= Bundler.with_clean_env{ `h #{source} config -s | grep URL`}.lines.map{|ln| ln.gsub(?', "").split(/=/, 2).map(&:strip)}.to_h
+    cfg = @cfgs[source]
+
+    model_in_env = Class.new(model)
+    Object.const_set("#{model.name.gsub("::", "")}#{source.capitalize}", model_in_env)
+    model_in_enp v.establish_connection(cfg[db_url_env_name])
+    model_in_env
+  end
+
+
+  def lenvi name = 'ppr'
+    ActiveRecord::Base.establish_connection p ENV['DATABASE_URL']
+    Connections::OnlyInMasterDb.establish_connection p( ENV['FEATURE_READONLY_FOLLOWER__MASTER_DB_URL'] || ENV['DATABASE_URL'])
+    Connections::SalesforceDataHub.establish_connection p (ENV['HEROKU_ONE_DB_URL'] + '?schema_search_path=salesforce,public')
+    Connections::Ids.establish_connection p (ENV['IDS_DB_URL'])
+
+    eval("_pry_", binding.callers[1]).config.prompt_name = %[local DB]
+    nil
+  end
+
+
   def appo sfid = nil; sfid ? Salesforce::Appointment.find_by(sfid: sfid) : Salesforce::Appointment     end
   def advo username = nil; username ? Salesforce::ClinicalAdvisor.find_by(username: username) : Salesforce::ClinicalAdvisor end
+
+  Salesforce::ClinicalAdvisor.class_exec do
+    def self.[] uname
+      find_by(%[username ILIKE '%#{uname}%'])
+    end
+  end
+
+  Salesforce::User.class_exec do
+    def self.[] uname
+      find_by(%[username ILIKE '%#{uname}%'])
+    end
+  end
+
+  Doctor.class_exec do
+    def self.[] uname
+      find_by(%[username ILIKE '%#{uname}%'])
+    end
+  end
+
+  def like(substr, model = Salesforce::User)
+    model.find_by(%[username ILIKE '%#{substr}%'])
+  end
+
   def rgn;  Salesforce::Region          end
+  def ctct;  Salesforce::Contact end
   def _rule; DynamicRoute::VisitorSqlRule end
   def _dr; DynamicRoute end
 
@@ -291,23 +440,119 @@ end
 
 
 
+if defined?(Rails) && Rails.application.engine_name =~ /adva/i
+
+  def envi name = 'ppr'
+    @cfgs ||= {}
+    @cfgs[name] ||= Bundler.with_clean_env{ `h #{name} config -s | grep URL`}.lines.map{|ln| ln.gsub(?', "").split(/=/, 2).map(&:strip)}.to_h
+    cfg = @cfgs[name]
+    ActiveRecord::Base.establish_connection p cfg['DATABASE_URL']
+    HerokuConnect.constants.map { |e| HerokuConnect.const_get(e) }.each do |e|
+      # e.establish_connection(p (cfg['HEROKU_CONNECT_URL'] + '?schema_search_path=salesforce,public'))
+      e.try(:establish_connection, p(cfg['HEROKU_CONNECT_URL']))
+    end
+
+    eval("_pry_", binding.callers[1]).config.prompt_name = %[LIVE #{name} DBs!].red
+    nil
+    # Pry.config.prompt_name = name
+  end
+
+
+  def model_for_env(model, source: "prod", db_url_env_name: "DATABASE_URL")
+    @cfgs ||= {}
+    @cfgs[source] ||= Bundler.with_clean_env{ `h #{source} config -s | grep URL`}.lines.map{|ln| ln.gsub(?', "").split(/=/, 2).map(&:strip)}.to_h
+    cfg = @cfgs[source]
+
+    model_in_env = Class.new(model)
+    Object.const_set("#{model.name.gsub("::", "")}#{source.capitalize}", model_in_env)
+    model_in_enp v.establish_connection(cfg[db_url_env_name])
+    model_in_env
+  end
+
+
+  # def lenvi name = 'ppr'
+  #   ActiveRecord::Base.establish_connection p ENV['DATABASE_URL']
+  #   Connections::OnlyInMasterDb.establish_connection p( ENV['FEATURE_READONLY_FOLLOWER__MASTER_DB_URL'] || ENV['DATABASE_URL'])
+  #   Connections::SalesforceDataHub.establish_connection p (ENV['HEROKU_ONE_DB_URL'] + '?schema_search_path=salesforce,public')
+  #   Connections::Ids.establish_connection p (ENV['IDS_DB_URL'])
+
+  #   eval("_pry_", binding.callers[1]).config.prompt_name = %[local DB]
+  #   nil
+  # end
+
+
+
+  # Salesforce::ClinicalAdvisor.class_exec do
+  #   def self.[] uname
+  #     find_by(%[username ILIKE '%#{uname}%'])
+  #   end
+  # end
+
+  # HerokuConnect::User.class_exec do
+  #   def self.[] uname
+  #     find_by(%[username ILIKE '%#{uname}%'])
+  #   end
+  # end
+
+  # Doctor.class_exec do
+  #   def self.[] uname
+  #     find_by(%[username ILIKE '%#{uname}%'])
+  #   end
+  # end
+
+  def like(substr, model = Salesforce::User)
+    model.find_by(%[username ILIKE '%#{substr}%'])
+  end
+
+
+  Doctor.class_exec do
+    tp.set( Doctor, :username, :did, :country,
+           :_locale,
+            "enrollments.program.name",
+            "enrollments.current_tier.name" ,
+            "enrollments.program.id")
+
+    store_accessor :ids_full_info, :country
+
+
+    def _locale
+      ids_full_info["locale"]
+    end
+  end
+
+  def dr(id)
+    Doctor.find_by(username: id)
+  end
+
+
+  module Conv
+  end
+
+  Conv.class_exec do
+    module_function
+
+    def sampledocs(locale: 'fr', program_id: 30, country: "CA" )
+      @candocs ||=
+        Doctor.joins(:enrollments).where(%[program_id = #{program_id} AND doctors.ids_full_info ->> 'country' = '#{country}']).
+          where(%[doctors.ids_full_info ->> 'locale' ILIKE '%#{locale}%']).
+          limit(3).includes(:enrollments => :program)
+    end
+  end
+
+end
+
+
+
+
+
 if defined?(Rails) && Rails.application.engine_name =~ /teen_plat/i
 
   def envi name = 'h2'
     cfg = Bundler.with_clean_env{ `h #{name} config -s | grep URL`}.lines.map{|ln| ln.gsub(?', "").split(/=/, 2).map(&:strip)}.to_h
-    ActiveRecord::Base.octopus_establish_connection p cfg['DATABASE_URL']
+    ActiveRecord::Base.establish_connection p cfg['DATABASE_URL']
     Salesforce::Base.establish_connection p (cfg['HEROKU_ONE_DB_URL'] + '?schema_search_path=salesforce,public')
     eval("_pry_", binding.callers[1]).config.prompt_name = %[LIVE #{name} DBs!].red
   end
-
-
-
-  # def happ name = 'ioa-api-h2-us'
-  #   cfg = Bundler.with_clean_env{ `heroku config -s -a #{name} | grep URL`}.lines.map{|ln| ln.gsub(?', "").split(/=/, 2).map(&:strip)}.to_h
-  #   ActiveRecord::Base.octopus_establish_connection p cfg['DATABASE_URL']
-
-  #   Pry.config.prompt = proc{ "pry: #{name}> "}
-  # end
 
 
   def _tile;   Advent::ContextualTile end
@@ -449,12 +694,12 @@ end
 # Run just after a binding.pry, before you get dumped in the REPL.
 # This handles the case where Bundler is loaded before Pry.
 # NOTE: This hook happens *before* :before_session
-Pry.config.hooks.add_hook(:when_started, :debundle){ Pry.debundle! }
+# Pry.config.hooks.add_hook(:when_started, :debundle){ Pry.debundle! }
 
 # Run after every line of code typed.
 # This handles the case where you load something that loads bundler
 # into your Pry.
-Pry.config.hooks.add_hook(:after_eval, :debundle){ Pry.debundle! }
+# Pry.config.hooks.add_hook(:after_eval, :debundle){ Pry.debundle! }
 
 
 def fix_postgres!

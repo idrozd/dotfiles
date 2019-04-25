@@ -2,8 +2,8 @@
 [color]
   ui = auto
 [user]
-  name = Andrey Titov
-  email = terracote@gmail.com
+	name = Andrey Titov
+	email = atitov@aligntech.com
 
 [alias]
 # fafafa comment
@@ -19,6 +19,7 @@
   new = shortlog --all --since='1 weeks ago' --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --reverse
   new2 = whatchanged --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 	d = difftool
+	permission-reset = !git diff -p -R --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply
 
 
 [merge "gemfilelock"]
@@ -32,7 +33,7 @@
 [core]
   whitespace = trailing-space,space-before-tab,cr-at-eol,fix
   ;whitespace = -trailing-space,-indent-with-non-tab,-tab-in-indent,cr-at-eol
-	editor = vim
+	editor = nano
 	excludesfile = /Users/atitov/.global-gitignore
 	filemode = false
 	filemode = false
@@ -62,3 +63,14 @@
 	insteadOf = https://git.heroku.com/
 [url "ssh://git@heroku.align/"]
 	insteadOf = https://heroku.align/
+
+[diff "nodiff"]
+    command = /usr/bin/true
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Users/atitov/Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[commit]
+	template = /Users/atitov/.stCommitMsg
